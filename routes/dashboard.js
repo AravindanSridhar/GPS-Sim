@@ -18,32 +18,19 @@ dashboardRouter.get("/", function (req, res) {
   res.render("dashboard", {});
 });
 
-dashboardRouter.get("/parseTest", (req, res) => {
-  var lat = [],
-    long = [];
-  fs.createReadStream("output.csv")
-    .pipe(csv(["Latitude", "Longitude"]))
-    .on("data", (row) => {
-      lat.push(row["Latitude"]);
-      long.push(row["Longitude"]);
-    })
-    .on("end", () => {
-      console.log("CSV file successfully processed");
-      var index = 0;
-      var timer = setInterval(doStuff, 3000);
-      function doStuff() {
-        ++j;
-        if (j == lat.length) clearInterval(timer);
-      }
-      res.send("running");
-    });
-});
-
 dashboardRouter.get("/startTrajectory", (req, res) => {
   var lat = [],
     long = [];
-
-  fs.createReadStream("output.csv")
+  let nofile = false;
+  var csvFile = fs.createReadStream("trajectory.csv");
+  csvFile.on("error", (err) => {
+    console.log(err);
+    nofile = true;
+  });
+  if (nofile == true) {
+    res.satuts(400).send({ status: "No trajectory file found!" });
+  }
+  csvFile
     .pipe(csv(["Latitude", "Longitude"]))
     .on("data", (row) => {
       lat.push(row["Latitude"]);
@@ -53,7 +40,7 @@ dashboardRouter.get("/startTrajectory", (req, res) => {
       console.log("CSV file successfully processed");
 
       // GPS update setup
-      var interval = req.query.interval;
+      var interval = parseInt(req.query.interval);
       var url = req.query.url;
       var index = 0;
       var timer = setInterval(doStuff, interval);
@@ -72,17 +59,20 @@ dashboardRouter.get("/startTrajectory", (req, res) => {
             console.log(error);
           });
         ++index;
-        //Stop interval loop upon reaching data length
+        //Stop interval loop upon reaching data length (number of trajectory points)
         if (index == lat.length) clearInterval(timer);
       }
-      res.status(200).send("Trajectory simulation started.");
+      res.status(200).send({ status: "Trajectory simulation started." });
     });
 });
 
-// dashboardRouter.post("/api/gps", (req, res) => {
-//   console.log("Tracking Server : " + req.body.latitude);
-//   res.status(201).send({ status: "Updated!" });
-// });
+//Internal Test Route. Do not disturb.
+dashboardRouter.post("/api/gps", (req, res) => {
+  console.log(
+    "Tracking Server : " + req.body.latitude + " " + req.body.longitude
+  );
+  res.status(201).send({ status: "Updated!" });
+});
 
 dashboardRouter.post("/uploadCSV", (req, res, next) => {
   const form = new formidable.IncomingForm();

@@ -15,7 +15,6 @@ $(document).ready(function () {
         }
       },
       error: function (response) {
-        console.log("Hey");
         $("#fileStatus").html(
           "<span class='red-text'>File upload failed.</span>"
         );
@@ -28,14 +27,22 @@ $(document).ready(function () {
   $("#startTrajectoryButton").click(() => {
     var interval = $("#intervalInput").val();
     var url = $("#urlInput").val();
-    var query = "interval=" + interval + ",url=" + url;
+    var query = "interval=" + interval + "&url=" + encodeURIComponent(url) + "";
     console.log(interval + " " + url);
     $.ajax({
       type: "GET",
       url: "/startTrajectory",
       data: query,
       success: function (data) {
-        alert(data);
+        $("#simulationStatus")
+          .html(data.status)
+          .removeClass("badge-danger")
+          .addClass("badge-info");
+      },
+      error: (json) => {
+        $("#fileStatus").html(
+          "<span class='red-text'>" + json.status + "</span>"
+        );
       },
     });
   });
