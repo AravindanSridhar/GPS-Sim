@@ -16,7 +16,7 @@ Please do send in your suggestions, features that you want to see in this applic
 3) Start trajectory to test your application or server.
 
 ## FURTHER DEVELOPMENTS
-This project is currently in its "beta" version 0.1.2. Please feel free to use it and provide me with any improvements and features that you might want added to make it more easy to simulate REST based GPS trajectories. 
+This project is currently in its "alpha" version 0.1.2. Please feel free to use it and provide me with any improvements and features that you might want added to make it more easy to simulate REST based GPS trajectories. 
 
 The actual production version 1.0.0 will hopefully contain the following features :
 1) User can pload multiple trajectory files and choose them on the go
