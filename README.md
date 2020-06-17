@@ -1,5 +1,5 @@
 # GPS-Sim
-A simple REST based NodeJS Server for simulating GPS clients/emitters. Upload your CSV file with GPS co-ordinates, set time interval, configure port and start simulating away.
+A simple REST based NodeJS Server for simulating GPS clients/emitters. Upload your CSV file with GPS co-ordinates, set time interval, configure port and start simulating away. You dont need to carry around your phone or create custom scripts to simulate your GPS trajectory. Just use this application to load your CSV and start hitting your server with REST calls.
 
 This is a NodeJS web applicaiton that you can quickly spin up, upload trajectory and start emitting RESTful POSTs to your application server that consumes termporal GPS data. Use this app to simulate a moving vechile or any trajectory that needs to be simulated.
 
